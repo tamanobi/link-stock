@@ -24,3 +24,7 @@
 /Godeps/
 
 # End of https://www.toptal.com/developers/gitignore/api/go
+
+gallery-dl
+gallery-dl.conf
+*.db
