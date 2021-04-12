@@ -53,11 +53,18 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 			return
 		}
 
+		code := r.URL.Query().Get("code")
+		if code == "" {
+			res, _ := json.Marshal(Ping{http.StatusForbidden, Record{}, "required code"})
+			w.Write(res)
+			return
+		}
 		url := r.URL.Query().Get("url")
 		referrer := r.Referer()
 		if url == "" {
 			res, _ := json.Marshal(Ping{http.StatusBadRequest, Record{}, ""})
 			w.Write(res)
+			return
 		}
 
 		if _, err := db.Exec(`
