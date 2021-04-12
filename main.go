@@ -60,7 +60,7 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 			return
 		}
 		url := r.URL.Query().Get("url")
-		referrer := r.Referer()
+		referrer := r.URL.Query().Get("referrer")
 		if url == "" {
 			res, _ := json.Marshal(Ping{http.StatusBadRequest, Record{}, ""})
 			w.Write(res)
