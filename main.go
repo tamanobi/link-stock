@@ -136,7 +136,7 @@ func getHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 				w.Write(res)
 				return
 			}
-			sl = append(sl, Record{id, url, ref, t.Format(time.RFC3339)})
+			sl = append(sl, Record{id, ref, url, t.Format(time.RFC3339)})
 		}
 		res, _ := json.Marshal(GetResponse{Recs: sl})
 		w.Write(res)
