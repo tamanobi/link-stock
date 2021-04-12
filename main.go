@@ -100,7 +100,7 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 				w.Write(res)
 				return
 			}
-			ping := Ping{http.StatusOK, Record{id, url, ref, t.String()}, ""}
+			ping := Ping{http.StatusOK, Record{id, url, ref, t.Format(time.RFC3339)}, ""}
 			res, _ := json.Marshal(ping)
 			w.Write(res)
 			return
