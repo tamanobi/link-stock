@@ -154,7 +154,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", dbHandler(db))
-	http.HandleFunc("/get", dbHandler(db))
+	http.HandleFunc("/get", getHandler(db))
 	httpServer.Addr = ":" + port
 
 	log.Fatalln(httpServer.ListenAndServe())
