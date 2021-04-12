@@ -14,11 +14,11 @@ RUN go mod download
 
 COPY . .
  
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /bin/main .
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o /bin/link-stock .
 
 FROM alpine:3.12
 
-COPY --from=builder /bin/main .
+COPY --from=builder /bin/link-stock .
 
 ENV PORT=${PORT}
-ENTRYPOINT ["/bin/main web"]
+ENTRYPOINT ["/bin/link-stock web"]
