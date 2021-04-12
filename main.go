@@ -85,15 +85,6 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 	}
 }
 
-func rootHandler(w http.ResponseWriter, r *http.Request) {
-	ping := Ping{http.StatusOK, "ok"}
-	res, _ := json.Marshal(ping)
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(res)
-}
-
 func main() {
 	var httpServer http.Server
 	port := os.Getenv("PORT")
