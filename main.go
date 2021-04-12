@@ -108,6 +108,42 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 	}
 }
 
+type GetResponse struct {
+	Recs []Record `json:"record"`
+}
+
+func getHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		rows, err := db.Query("SELECT id, referrer, url, created_at FROM links ORDER BY created_at DESC")
+		if err != nil {
+			s := fmt.Sprintf("Error reading: %q", err)
+			res, _ := json.Marshal(Ping{http.StatusInternalServerError, Record{}, s})
+			w.Write(res)
+			return
+		}
+		defer rows.Close()
+
+		var sl []Record
+
+		for rows.Next() {
+			var id int
+			var t time.Time
+			var url string
+			var ref string
+			if err := rows.Scan(&id, &ref, &url, &t); err != nil {
+				s := fmt.Sprintf("Error scanning: %q", err)
+				res, _ := json.Marshal(Ping{http.StatusInternalServerError, Record{}, s})
+				w.Write(res)
+				return
+			}
+			sl = append(sl, Record{id, url, ref, t.Format(time.RFC3339)})
+		}
+		res, _ := json.Marshal(GetResponse{Recs: sl})
+		w.Write(res)
+		return
+	}
+}
+
 func main() {
 	var httpServer http.Server
 	port := os.Getenv("PORT")
@@ -118,6 +154,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", dbHandler(db))
+	http.HandleFunc("/get", dbHandler(db))
 	httpServer.Addr = ":" + port
 
 	log.Fatalln(httpServer.ListenAndServe())
