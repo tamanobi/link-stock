@@ -55,6 +55,11 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 
 		url := r.URL.Query().Get("url")
 		referrer := r.Referer()
+		if url == "" {
+			res, _ := json.Marshal(Ping{http.StatusBadRequest, Record{}, ""})
+			w.Write(res)
+		}
+
 		if _, err := db.Exec(`
 			INSERT INTO links
 			(referrer, url) VALUES (
