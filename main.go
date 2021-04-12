@@ -12,9 +12,17 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type Record struct {
+	Id        int    `json:"id,omitempty"`
+	Referrer  string `json:"referrer,omitempty"`
+	Url       string `json:"url,omitempty"`
+	CreatedAt string `json:"created_at,omitempty"`
+}
+
 type Ping struct {
 	Status int    `json:"status"`
-	Result string `json:"result"`
+	Rec    Record `json:"record,omitempty"`
+	Err    string `json:"error"`
 }
 
 func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
@@ -33,14 +41,14 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 				)
 		`); err != nil {
 			s := fmt.Sprintf("Error creating database table: %q", err)
-			res, _ := json.Marshal(Ping{http.StatusInternalServerError, s})
+			res, _ := json.Marshal(Ping{http.StatusInternalServerError, Record{}, s})
 			w.Write(res)
 			return
 		}
 
 		v := r.URL.Query()
 		if v == nil {
-			res, _ := json.Marshal(Ping{http.StatusBadRequest, ""})
+			res, _ := json.Marshal(Ping{http.StatusBadRequest, Record{}, ""})
 			w.Write(res)
 			return
 		}
@@ -55,29 +63,32 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 			)
 		`, referrer, url); err != nil {
 			s := fmt.Sprintf("Error inserting: %q", err)
-			res, _ := json.Marshal(Ping{http.StatusInternalServerError, s})
+			res, _ := json.Marshal(Ping{http.StatusInternalServerError, Record{}, s})
 			w.Write(res)
 			return
 		}
 
-		rows, err := db.Query("SELECT tick FROM ticks ORDER BY tick DESC LIMIT 1")
+		rows, err := db.Query("SELECT id, referrer, url, created_at FROM links ORDER BY created_at DESC LIMIT 1")
 		if err != nil {
 			s := fmt.Sprintf("Error reading: %q", err)
-			res, _ := json.Marshal(Ping{http.StatusInternalServerError, s})
+			res, _ := json.Marshal(Ping{http.StatusInternalServerError, Record{}, s})
 			w.Write(res)
 			return
 		}
 		defer rows.Close()
 
 		for rows.Next() {
-			var tick time.Time
-			if err := rows.Scan(&tick); err != nil {
+			var id int
+			var t time.Time
+			var url string
+			var ref string
+			if err := rows.Scan(&id, &ref, &url, &t); err != nil {
 				s := fmt.Sprintf("Error scanning: %q", err)
-				res, _ := json.Marshal(Ping{http.StatusInternalServerError, s})
+				res, _ := json.Marshal(Ping{http.StatusInternalServerError, Record{}, s})
 				w.Write(res)
 				return
 			}
-			ping := Ping{http.StatusOK, tick.String()}
+			ping := Ping{http.StatusOK, Record{id, url, ref, t.String()}, ""}
 			res, _ := json.Marshal(ping)
 			w.Write(res)
 			return
