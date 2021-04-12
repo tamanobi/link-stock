@@ -23,14 +23,37 @@ func dbHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Content-Type", "application/json")
 
-		if _, err := db.Exec("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)"); err != nil {
+		if _, err := db.Exec(`
+			CREATE TABLE
+				IF NOT EXISTS links (
+					id serial PRIMARY KEY
+					, referrer text
+					, url text
+					, created_at timestamp default CURRENT_TIMESTAMP
+				)
+		`); err != nil {
 			s := fmt.Sprintf("Error creating database table: %q", err)
 			res, _ := json.Marshal(Ping{http.StatusInternalServerError, s})
 			w.Write(res)
 			return
 		}
 
-		if _, err := db.Exec("INSERT INTO ticks VALUES (now())"); err != nil {
+		v := r.URL.Query()
+		if v == nil {
+			res, _ := json.Marshal(Ping{http.StatusBadRequest, ""})
+			w.Write(res)
+			return
+		}
+
+		url := r.URL.Query().Get("url")
+		referrer := r.Referer()
+		if _, err := db.Exec(`
+			INSERT INTO links
+			(referrer, url) VALUES (
+				$1
+				, $2
+			)
+		`, referrer, url); err != nil {
 			s := fmt.Sprintf("Error inserting: %q", err)
 			res, _ := json.Marshal(Ping{http.StatusInternalServerError, s})
 			w.Write(res)
