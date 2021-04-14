@@ -39,7 +39,8 @@ while True:
     atarashii = list(set(ids) - set(subete))
     print(atarashii)
     for a in atarashii:
-        cmd = f"/home/tamanobi/.anyenv/envs/pyenv/versions/3.8.5/bin/gallery-dl --config ./gallery-dl.conf {a[1]}"
+        url = a[1].replace("/ja/", "/")
+        cmd = f"/home/tamanobi/.anyenv/envs/pyenv/versions/3.8.5/bin/gallery-dl --config ./gallery-dl.conf {url}"
         proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         print(cmd)
         print(proc.stderr)
