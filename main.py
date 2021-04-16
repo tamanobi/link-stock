@@ -32,12 +32,12 @@ while True:
             exit(1)
         records = json.loads(res.read())["record"]
         ids = [(rec["id"], rec.get("url")) for rec in records if rec.get("url") is not None and "?tags" not in rec.get("url")]
-        print(records)
 
     cur.execute('SELECT id, url FROM saved')
     subete = [(x[0], x[1]) for x in cur.fetchall()]
     atarashii = list(set(ids) - set(subete))
-    print(atarashii)
+    if len(atarashii) > 0:
+        print(atarashii)
     for a in atarashii:
         url = a[1].replace("/ja/", "/")
         cmd = f"/home/tamanobi/.anyenv/envs/pyenv/versions/3.8.5/bin/gallery-dl --config ./gallery-dl.conf {url}"
