@@ -40,7 +40,8 @@ while True:
         print(atarashii)
     for a in atarashii:
         url = a[1].replace("/ja/", "/")
-        cmd = f"/home/tamanobi/.anyenv/envs/pyenv/versions/3.8.5/bin/gallery-dl --config ./gallery-dl.conf {url}"
+        GALLERY_DL = "/home/tamanobi/.anyenv/envs/pyenv/versions/3.8.5/bin/gallery-dl"
+        cmd = f"{GALLERY_DL} --config ./gallery-dl.conf {url}"
         proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         print(cmd)
         print(proc.stderr)
