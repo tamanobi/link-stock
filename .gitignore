@@ -182,3 +182,4 @@ Thumbs.db
 gallery-dl
 gallery-dl.conf
 *.db
+settings.py
