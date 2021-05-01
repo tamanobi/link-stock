@@ -59,6 +59,14 @@ while True:
         print(cmd)
         print(proc.stderr)
 
+        # import numpy as np
+        # import pdqhash
+        # from PIL import Image
+        # im = Image.open("deadbeef.jpg")
+        # np.asarray(im)
+        # im_np = np.asarray(im)
+        # hash_vector, quality = pdqhash.compute(im_np)
+
         cur.execute(
             """
             INSERT INTO saved (id, url) VALUES (?, ?)
