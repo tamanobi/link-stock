@@ -183,3 +183,6 @@ gallery-dl
 gallery-dl.conf
 *.db
 settings.py
+.gitsecret/keys/random_seed
+.gitsecret/keys/pubring.kbx~
+sankaku.py
