@@ -6,6 +6,7 @@ import subprocess
 import time
 import urllib.request
 import json
+from constants import GALLERY_DL
 
 import sqlite3
 
@@ -46,7 +47,6 @@ while True:
         print(atarashii)
     for a in atarashii:
         url = a[1].replace("/ja/", "/")
-        GALLERY_DL = "/home/tamanobi/.anyenv/envs/pyenv/versions/3.8.5/bin/gallery-dl"
         cmd = f"{GALLERY_DL} --config ./gallery-dl.conf {url}"
         proc = subprocess.run(
             cmd,
