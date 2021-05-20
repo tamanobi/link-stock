@@ -7,14 +7,14 @@ import time
 import urllib.request
 import json
 from constants import GALLERY_DL
+from repositories import StockDB
 
 import sqlite3
 
 while True:
     time.sleep(1)
 
-    con = sqlite3.connect("image.db")
-    cur = con.cursor()
+    cur = StockDB.get_cursor()
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS saved
