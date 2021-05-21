@@ -15,16 +15,7 @@ while True:
     time.sleep(1)
 
     cur = StockDB.get_cursor()
-    cur.execute(
-        """
-        CREATE TABLE IF NOT EXISTS saved
-            (
-                id integer
-                , url text
-                , created_at TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
-            )
-    """
-    )
+    StockDB.create_table_if_not_exists()
 
     ids = []
     req = urllib.request.Request(url="https://cryptic-wildwood-50649.herokuapp.com/get")
