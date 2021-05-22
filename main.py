@@ -5,9 +5,10 @@ import os
 import subprocess
 import time
 import urllib.request
-import json
 from constants import GALLERY_DL
 from repositories import StockDB
+from ext import LinkStockAPI
+
 
 import sqlite3
 
@@ -17,19 +18,7 @@ while True:
     cur = StockDB.get_cursor()
     StockDB.create_table_if_not_exists()
 
-    ids = []
-    req = urllib.request.Request(url="https://cryptic-wildwood-50649.herokuapp.com/get")
-    with urllib.request.urlopen(req) as res:
-        if res is None:
-            exit(1)
-        if res.status != 200:
-            exit(1)
-        records = json.loads(res.read())["record"]
-        ids = [
-            (rec["id"], rec.get("url"))
-            for rec in records
-            if rec.get("url") is not None and "?tags" not in rec.get("url")
-        ]
+    ids = LinkStockAPI.get()
 
     cur.execute("SELECT id, url FROM saved")
     subete = [(x[0], x[1]) for x in cur.fetchall()]
