@@ -15,6 +15,7 @@ import sqlite3
 while True:
     time.sleep(1)
 
+    con = StockDB.get_connection()
     cur = StockDB.get_cursor()
     StockDB.create_table_if_not_exists()
 

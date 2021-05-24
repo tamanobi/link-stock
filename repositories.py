@@ -2,14 +2,19 @@ import sqlite3
 
 
 class StockDB:
-    cur = None
+    conn = None
     
     @classmethod
+    def get_connection(cls):
+        if cls.conn:
+            return cls.conn
+
+        cls.conn = sqlite3.connect("image.db")
+        return cls.conn
+
+    @classmethod
     def get_cursor(cls):
-        if cls.cur:
-            return cls.cur
-        
-        conn = sqlite3.connect("image.db")
+        conn = cls.get_connection()
         cls.cur = conn.cursor()
         return cls.cur
 
