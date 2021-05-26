@@ -21,8 +21,7 @@ while True:
 
     ids = LinkStockAPI.get()
 
-    cur.execute("SELECT id, url FROM saved")
-    subete = [(x[0], x[1]) for x in cur.fetchall()]
+    subete = StockDB.get_all()
     atarashii = list(set(ids) - set(subete))
     if len(atarashii) > 0:
         print(atarashii)

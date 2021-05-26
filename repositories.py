@@ -31,3 +31,9 @@ class StockDB:
                 )
             """
         )
+
+    @classmethod
+    def get_all(cls):
+        cur = cls.get_cursor()
+        cur.execute("SELECT id, url FROM saved")
+        return [(x[0], x[1]) for x in cur.fetchall()]
