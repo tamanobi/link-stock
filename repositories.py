@@ -6,9 +6,6 @@ class StockDB:
     
     @classmethod
     def get_connection(cls):
-        if cls.conn:
-            return cls.conn
-
         cls.conn = sqlite3.connect("image.db")
         return cls.conn
 
