@@ -39,7 +39,6 @@ class StockDB:
         return [(x[0], x[1]) for x in cur.fetchall()]
 
     def insert(self, id_, url):
-        print("insert")
         cur = self.get_cursor()
         cur.execute(
             """
