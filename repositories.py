@@ -4,15 +4,20 @@ from contextlib import contextmanager
 
 class StockDB:
     conn = None
+    db_name = "image.db"
 
     def __init__(self):
-        self.conn = sqlite3.connect("image.db")
+        self.conn = self.connect()
     
+    def connect(self):
+        self.conn = sqlite3.connect(self.db_name)
+        return self.conn
+
     def get_connection(self):
         if self.conn:
             return self.conn
 
-        self.conn = sqlite3.connect("image.db")
+        self.conn = self.connect()
         return self.conn
 
     def get_cursor(self):
