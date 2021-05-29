@@ -22,10 +22,10 @@ while True:
         local_ids = db.get_all()
         remote_ids = LinkStockAPI.get()
 
-        atarashii = list(set(remote_ids) - set(local_ids))
-        if len(atarashii) > 0:
-            print(atarashii)
-        for a in atarashii:
+        have_not_saved_ids = list(set(remote_ids) - set(local_ids))
+        if len(have_not_saved_ids) > 0:
+            print(have_not_saved_ids)
+        for a in have_not_saved_ids:
             url = normalize_url(a[1])
             proc = gdl.run(url)
             print(proc.stderr)
