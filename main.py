@@ -1,7 +1,6 @@
 """
 Link Stock をポーリングして変更があった場合はプロセスを実行する
 """
-import os
 import time
 from repositories import StockDB
 from ext import LinkStockAPI, GalleryDL
