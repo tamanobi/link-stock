@@ -9,8 +9,6 @@ from repositories import StockDB
 from ext import LinkStockAPI, GalleryDL
 
 
-import sqlite3
-
 while True:
     time.sleep(1)
 
