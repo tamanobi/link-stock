@@ -15,13 +15,14 @@ import sqlite3
 while True:
     time.sleep(1)
 
-    con = StockDB.get_connection()
-    cur = StockDB.get_cursor()
-    StockDB.create_table_if_not_exists()
+    db = StockDB()
+    con = db.get_connection()
+    cur = db.get_cursor()
+    db.create_table_if_not_exists()
 
     ids = LinkStockAPI.get()
 
-    subete = StockDB.get_all()
+    subete = db.get_all()
     atarashii = list(set(ids) - set(subete))
     if len(atarashii) > 0:
         print(atarashii)
@@ -47,11 +48,6 @@ while True:
         # im_np = np.asarray(im)
         # hash_vector, quality = pdqhash.compute(im_np)
 
-        cur.execute(
-            """
-            INSERT INTO saved (id, url) VALUES (?, ?)
-        """,
-            [int(a[0]), a[1]],
-        )
-        con.commit()
-    con.close()
+        db.insert(int(a[0]), a[1])
+        db.commit()
+    db.close()
