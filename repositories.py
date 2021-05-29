@@ -1,8 +1,12 @@
 import sqlite3
+from contextlib import contextmanager
 
 
 class StockDB:
     conn = None
+
+    def __init__(self):
+        self.conn = sqlite3.connect("image.db")
     
     def get_connection(self):
         if self.conn:
@@ -35,6 +39,7 @@ class StockDB:
         return [(x[0], x[1]) for x in cur.fetchall()]
 
     def insert(self, id_, url):
+        print("insert")
         cur = self.get_cursor()
         cur.execute(
             """
@@ -44,7 +49,18 @@ class StockDB:
         )
 
     def commit(self):
-        self.conn.commit()
+        conn = self.get_connection()
+        conn.commit()
 
     def close(self):
-        self.conn.close()
+        conn = self.get_connection()
+        conn.close()
+
+
+@contextmanager
+def stock_db_context():
+    db = StockDB() 
+    try:
+        yield db
+    finally:
+        db.close()
