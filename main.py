@@ -2,9 +2,7 @@
 Link Stock をポーリングして変更があった場合はプロセスを実行する
 """
 import os
-import subprocess
 import time
-import urllib.request
 from repositories import StockDB
 from ext import LinkStockAPI, GalleryDL
 
