@@ -5,9 +5,8 @@ import os
 import subprocess
 import time
 import urllib.request
-from constants import GALLERY_DL
 from repositories import StockDB
-from ext import LinkStockAPI
+from ext import LinkStockAPI, GalleryDL
 
 
 import sqlite3
@@ -26,18 +25,10 @@ while True:
     atarashii = list(set(ids) - set(subete))
     if len(atarashii) > 0:
         print(atarashii)
+    gdl = GalleryDL()
     for a in atarashii:
         url = a[1].replace("/ja/", "/")
-        cmd = f"{GALLERY_DL} --config ./gallery-dl.conf {url}"
-        proc = subprocess.run(
-            cmd,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            check=True,
-        )
-        print(cmd)
+        proc = gdl.run(url)
         print(proc.stderr)
 
         # import numpy as np
