@@ -10,6 +10,10 @@ def get_not_saved_ids(remote_ids: list, local_ids: list) -> list:
     return list(set(remote_ids) - set(local_ids))
 
 
+def normalize_url(url: str) -> str:
+    return url.replace("/ja/", "/")
+
+
 while True:
     time.sleep(1)
 
@@ -26,7 +30,7 @@ while True:
         print(not_saved_ids)
     gdl = GalleryDL()
     for id_, url in not_saved_ids:
-        url = url.replace("/ja/", "/")
+        url = normalize_url(url)
         proc = gdl.run(url)
         print(proc.stderr)
 
