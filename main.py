@@ -22,12 +22,11 @@ while True:
         local_ids = db.get_all()
         remote_ids = LinkStockAPI.get()
 
-        not_saved_ids = get_not_saved_ids(remote_ids, local_ids)
-        if len(not_saved_ids) > 0:
-            print(not_saved_ids)
-
-        for id_, url in not_saved_ids:
-            url = normalize_url(url)
+        atarashii = list(set(remote_ids) - set(local_ids))
+        if len(atarashii) > 0:
+            print(atarashii)
+        for a in atarashii:
+            url = normalize_url(a[1])
             proc = gdl.run(url)
             print(proc.stderr)
 
@@ -39,6 +38,6 @@ while True:
             # im_np = np.asarray(im)
             # hash_vector, quality = pdqhash.compute(im_np)
 
-            db.insert(int(id_), url)
+            db.insert(int(a[0]), a[1])
             db.commit()
     time.sleep(1)
