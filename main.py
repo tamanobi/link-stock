@@ -35,7 +35,7 @@ if __name__ == "__main__":
                 print(have_not_saved_ids)
             for id_, url in have_not_saved_ids:
                 url = normalize_url(url)
-                proc = gdl.run(url)
+                proc = gdl.download(url)
                 print(proc.stderr)
 
                 # import numpy as np

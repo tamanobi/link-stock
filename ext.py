@@ -2,6 +2,7 @@ import urllib.request
 import json
 import subprocess
 from constants import GALLERY_DL
+from typing import Protocol, Any
 
 
 class APIError(Exception):
@@ -28,8 +29,13 @@ class LinkStockAPI:
             ]
         return ids
 
-class GalleryDL():
-    def run(self, url):
+
+class Downloader(Protocol):
+    def download(self) -> Any:
+        pass
+
+class GalleryDL(Downloader):
+    def download(self, url):
         cmd = f"{GALLERY_DL} --config ./gallery-dl.conf {url}"
         print(cmd)
         proc = subprocess.run(
