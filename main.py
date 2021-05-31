@@ -14,6 +14,10 @@ def normalize_url(url: str) -> str:
     return url.replace("/ja/", "/")
 
 
+def normalize_url_list(list_) -> list:
+    return [(id_, normalize_url(url)) for id_, url in list_]
+
+
 while True:
     gdl = GalleryDL()
     with stock_db_context() as db:
@@ -25,7 +29,7 @@ while True:
         remote_ids = [(id_, normalize_url(url)) for id_, url in remote_ids]
 
         have_not_saved_ids = list(set(remote_ids) - set(local_ids))
-        have_not_saved_ids = [(id_, normalize_url(url)) for id_, url in have_not_saved_ids]
+        have_not_saved_ids = normalize_url_list(have_not_saved_ids)
         if len(have_not_saved_ids) > 0:
             print(have_not_saved_ids)
         for id_, url in have_not_saved_ids:
