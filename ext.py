@@ -31,7 +31,7 @@ class LinkStockAPI:
 
 
 class Downloader(Protocol):
-    def download(self) -> Any:
+    def download(self) -> subprocess.CompletedProcess:
         pass
 
 class GalleryDL(Downloader):
