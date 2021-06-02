@@ -47,3 +47,7 @@ class GalleryDL(Downloader):
             check=True,
         )
         return proc
+
+class TestDL(Downloader):
+    def download(self, url):
+        return subprocess.CompletedProcess()
