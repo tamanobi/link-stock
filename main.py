@@ -3,7 +3,7 @@ Link Stock をポーリングして変更があった場合はプロセスを実
 """
 import time
 from repositories import StockDB, stock_db_context
-from ext import LinkStockAPI, GalleryDL
+from ext import LinkStockAPI, GalleryDL, TestDL
 
 
 def get_not_saved_ids(remote_ids: list, local_ids: list) -> list:
@@ -20,7 +20,7 @@ def normalize_url_list(list_) -> list:
 
 if __name__ == "__main__":
     while True:
-        gdl = GalleryDL()
+        gdl = TestDL()
         with stock_db_context() as db:
             db.create_table_if_not_exists()
 
