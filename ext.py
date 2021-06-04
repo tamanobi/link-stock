@@ -50,4 +50,5 @@ class GalleryDL(Downloader):
 
 class TestDL(Downloader):
     def download(self, url):
+        print(url)
         return subprocess.CompletedProcess(args="", returncode=0)
