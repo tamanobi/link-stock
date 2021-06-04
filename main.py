@@ -19,8 +19,8 @@ def normalize_url_list(list_) -> list:
 
 
 if __name__ == "__main__":
+    gdl = get_factory()
     while True:
-        gdl = get_factory()
         with stock_db_context() as db:
             db.create_table_if_not_exists()
 
