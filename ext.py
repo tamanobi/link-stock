@@ -52,3 +52,12 @@ class TestDL(Downloader):
     def download(self, url):
         print(url)
         return subprocess.CompletedProcess(args="", returncode=0)
+
+def get_factory() -> Downloader:
+    env = os.environ.get("ENV", "")
+    if env == "PRODUCTION":
+        return GalleryDL()
+    elif env == "DEVELOPMENT":
+        return TestDL()
+    else:
+        return TestDL()
