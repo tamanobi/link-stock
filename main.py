@@ -3,7 +3,7 @@ Link Stock をポーリングして変更があった場合はプロセスを実
 """
 import time
 from repositories import StockDB, stock_db_context
-from ext import LinkStockAPI, get_factory
+from ext import get_api, get_factory
 
 
 def get_not_saved_ids(remote_ids: list, local_ids: list) -> list:
@@ -25,7 +25,7 @@ if __name__ == "__main__":
             db.create_table_if_not_exists()
 
             local_ids = db.get_all()
-            remote_ids = LinkStockAPI.get()
+            remote_ids = get_api()
 
             remote_ids = [(id_, normalize_url(url)) for id_, url in remote_ids]
 

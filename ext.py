@@ -31,6 +31,10 @@ class LinkStockAPI:
         return ids
 
 
+def get_api():
+    return LinkStockAPI().get()
+
+
 class Downloader(Protocol):
     def download(self) -> subprocess.CompletedProcess:
         pass
