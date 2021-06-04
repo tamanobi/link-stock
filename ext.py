@@ -3,6 +3,7 @@ import json
 import subprocess
 from constants import GALLERY_DL
 from typing import Protocol, Any
+import os
 
 
 class APIError(Exception):

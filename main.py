@@ -4,7 +4,7 @@ Link Stock をポーリングして変更があった場合はプロセスを実
 import time
 from repositories import StockDB, stock_db_context
 from ext import LinkStockAPI, get_factory
-import os
+
 
 def get_not_saved_ids(remote_ids: list, local_ids: list) -> list:
     return list(set(remote_ids) - set(local_ids))
